@@ -1,8 +1,14 @@
 import { createStore } from "vuex";
 
 export default createStore({
-  state: {},
-  mutations: {},
+  state: {
+    // path: "",
+  },
+  mutations: {
+    // setpath(state, data) {
+    //   state.path = data;
+    // },
+  },
   actions: {},
-  modules: {}
+  modules: {},
 });
