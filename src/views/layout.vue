@@ -42,7 +42,10 @@ export default defineComponent({
 #components-layout-demo-basic .ant-layout-footer {
   background: #fff;
 }
-.ant-layout-header,
+.ant-layout-header {
+  margin-bottom: 3px;
+  padding: 0 !important;
+}
 .ant-layout-footer {
   padding: 0 !important;
 }

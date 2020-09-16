@@ -2,9 +2,11 @@ import * as axios from "axios";
 
 declare module "axios" {
   interface AxiosResponse<T> {
-    total?: number;
+    total: number;
     data: T;
     status: number;
     message: string;
+    token: string;
+    user: T;
   }
 }

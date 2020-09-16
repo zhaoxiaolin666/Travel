@@ -23,6 +23,26 @@ export default {
     captcha: string;
     password: string;
   }) {
-    return service.post("register", { username, nickname, captcha, password });
+    return service.post("/accounts/register", {
+      username,
+      nickname,
+      captcha,
+      password,
+    });
+  },
+  //登录
+  postlogin({ username, password }: { username: string; password: string }) {
+    return service.post("/accounts/login", {
+      username,
+      password,
+    });
+  },
+  //推荐机票
+  getairssale() {
+    return service.get("/airs/sale");
+  },
+  //搜索城市
+  getcities({ name }: { name: string }) {
+    return service.get(`/cities?name=${name}`);
   },
 };

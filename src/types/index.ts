@@ -12,27 +12,7 @@ export interface Rescaptchas {
   status: number;
   message: string;
 }
-//注册
-export interface Resregister {
-  jwt: string;
-  user: Userregister;
-}
-export interface Userregister {
-  id: number;
-  username: string;
-  email: null;
-  role: Roleregister;
-  nickname: string;
-  created_at: number;
-  updated_at: number;
-  comments: [];
-}
-export interface Roleregister {
-  id: number;
-  name: string;
-  description: string;
-  type: string;
-}
+
 export interface Code {
   code?: string;
   created_at?: number;
@@ -42,11 +22,36 @@ export interface Code {
   updated_at?: number;
 }
 
+//注册
+export interface Resregister {
+  token?: string;
+  user?: Userregister;
+}
+export interface Userregister {
+  id?: number;
+  username?: string;
+  email?: null;
+  role?: number;
+  nickname?: string;
+  created_at?: number;
+  updated_at?: number;
+  defaultAvatar?: string;
+  starPosts?: null;
+}
+// export interface Roleregister {
+//   id: number;
+//   name: string;
+//   description: string;
+//   type: string;
+// }
+
+//登录表单
 export interface RuleForm {
   username: string | number;
   password: string | number;
 }
 
+//登录规则
 export interface Rules {
   username: username[];
   password: username[];
@@ -58,6 +63,7 @@ export interface username {
   trigger: string;
 }
 
+//注册表单
 export interface Forms {
   cellphonenumber: number | string;
   VerificationCode: string | number;
@@ -66,6 +72,7 @@ export interface Forms {
   checkpassword: string | number;
 }
 
+//注册规则
 export interface register {
   cellphonenumber: username[];
   VerificationCode: username[];
@@ -73,3 +80,25 @@ export interface register {
   passwords: username[];
   checkpassword: username[];
 }
+//推荐机票
+export interface Resairssale {
+  data?: ResairssaleItem;
+  total?: number;
+}
+export interface ResairssaleItem {
+  cover?: string;
+  departCity?: string;
+  departCode?: string;
+  departDate?: string;
+  destCity?: string;
+  destCode?: string;
+  price?: number;
+}
+//城市搜索
+// export interface Rescities{
+//     data?:RescitiesItem;
+//     total?:number;
+// }
+// export interface RescitiesItem{
+
+// }
