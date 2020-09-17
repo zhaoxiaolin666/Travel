@@ -12,6 +12,13 @@
 }
 
 
+/* 弹性盒子自动换行 */
+
+.f-wrap {
+    flex-wrap: wrap;
+}
+
+
 /* 等间距比 */
 
 .j-between {
@@ -23,6 +30,10 @@
 
 .j-around {
     justify-content: space-around;
+}
+
+.j-start {
+    justify-content: flex-start;
 }
 
 
@@ -100,4 +111,11 @@
 
 .t-center {
     text-align: center;
+}
+
+
+/* 圆形 */
+
+.br {
+    border-radius: 50%;
 }

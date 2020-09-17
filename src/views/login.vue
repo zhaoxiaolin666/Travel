@@ -297,7 +297,7 @@ export default defineComponent({
           }
         })
         .catch((err: any) => {
-          console.log(err, 333);
+          console.log(err);
         });
     };
     onMounted(() => {

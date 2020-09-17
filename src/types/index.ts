@@ -94,6 +94,85 @@ export interface ResairssaleItem {
   destCode?: string;
   price?: number;
 }
+
+//城市菜单列表
+export interface Respostscities {
+  data?: RespostscitiesItem[];
+  total?: number;
+}
+export interface RespostscitiesItem {
+  type?: string; // 主题类型
+  children?: childrenItem[]; // 城市列表
+}
+export interface childrenItem {
+  city?: string;
+  desc?: string;
+}
+//文章详情
+export interface Resposts {
+  data?: RespostsItem;
+  total?: number;
+}
+// data文章详情
+export interface RespostsItem {
+  account?: accountItem;
+  banner?: [];
+  city?: city111;
+  cityName?: string;
+  comments?: comments111[];
+  content?: string;
+  created_at?: number;
+  id?: number;
+  images?: images111[];
+  like?: null;
+  likeIds?: null;
+  postkind?: null;
+  scenic?: null;
+  summary?: string;
+  title?: string;
+  updated_at?: number;
+  watch?: number;
+}
+export interface accountItem {
+  created_at?: number;
+  defaultAvatar?: string;
+  email?: null;
+  id?: number;
+  nickname?: string;
+  password?: string;
+  role?: number;
+  starPosts?: null;
+  updated_at?: number;
+  username?: string;
+}
+export interface city111 {
+  code?: string;
+  created_at?: string;
+  id?: number;
+  level?: string;
+  name?: string;
+  parentCode?: string;
+  sort?: string;
+  updated_at?: number;
+}
+export interface comments111 {
+  account?: number;
+  content?: string;
+  created_at?: number;
+  follow?: null;
+  hotel?: null;
+  id?: number;
+  level?: number;
+  like?: null;
+  likeIds?: null;
+  post?: number;
+  score?: null;
+  type?: number;
+  updated_at?: number;
+}
+export interface images111 {
+  [key: string]: string;
+}
 //城市搜索
 // export interface Rescities{
 //     data?:RescitiesItem;

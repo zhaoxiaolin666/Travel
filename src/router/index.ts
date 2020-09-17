@@ -45,6 +45,16 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: "国内机票",
         },
+        // children: [
+        //   {
+        //     path: "/ticket/flights",
+        //     name: "ticketflights",
+        //     component: () => import("../views/air/ticketflights.vue"),
+        //     meta: {
+        //       title: "机票列表",
+        //     },
+        //   },
+        // ],
       },
       {
         path: "/login",
