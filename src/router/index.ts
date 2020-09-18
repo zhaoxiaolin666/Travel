@@ -7,6 +7,7 @@ import {
   NavigationGuardNext,
 } from "vue-router";
 import layout from "../views/layout.vue";
+import strategy111 from "../views/strategy111.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,15 +21,47 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/Home.vue"),
         meta: {
           title: "首页",
+          parentpath: "/home",
         },
       },
       {
-        path: "/strategy",
-        name: "strategy",
-        component: () => import("../views/strategy.vue"),
+        path: "/strategy111",
+        name: "strategy111",
+        redirect: "/strategy",
+        component: strategy111,
         meta: {
           title: "旅游攻略",
+          parentpath: "/strategy",
         },
+        children: [
+          {
+            path: "/strategy",
+            name: "strategy",
+            component: () => import("../views/strategy.vue"),
+            meta: {
+              title: "旅游攻略",
+              parentpath: "/strategy",
+            },
+          },
+          {
+            path: "/strategy/create",
+            name: "strategycreate",
+            component: () => import("../views/strategy/strategycreate.vue"),
+            meta: {
+              title: "游记",
+              parentpath: "/strategy",
+            },
+          },
+          {
+            path: "/strategy/deteil",
+            name: "strategydeteil",
+            component: () => import("../views/strategy/strategydeteil.vue"),
+            meta: {
+              title: "旅游攻略详情",
+              parentpath: "/strategy",
+            },
+          },
+        ],
       },
       {
         path: "/hotel",
@@ -36,6 +69,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/hotel.vue"),
         meta: {
           title: "酒店",
+          parentpath: "/hotel",
         },
       },
       {
@@ -44,6 +78,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/ticket.vue"),
         meta: {
           title: "国内机票",
+          parentpath: "/ticket",
         },
         // children: [
         //   {
@@ -62,6 +97,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/login.vue"),
         meta: {
           title: "登录/注册",
+          parentpath: "/login",
         },
       },
     ],

@@ -10,7 +10,7 @@
             v-for="(item,index) in nav"
             :key="index"
             style="padding:0 15px;font-size:18px;"
-            :class="item.path===$route.path ? 'color' : 'hover'"
+            :class="item.path===$route.meta.parentpath ? 'color' : 'hover'"
             @click="clicknav(item)"
           >{{item.title}}</div>
         </div>
@@ -19,18 +19,26 @@
         style="padding:0 15px;font-size:16px;cursor:pointer;"
         @click="gotologin"
         class="logins"
-        v-if="!flag"
+        v-if="$store.state.loginhead===''&&$store.state.loginname===''"
       >登录/注册</div>
-      <div v-else class="mi">
+      <div class="mi" v-else @mouseenter="enter" @mouseleave="leave">
         <img
-          :src="`http://157.122.54.189:9095${user.defaultAvatar}`"
+          :src="`http://157.122.54.189:9095${$store.state.loginhead}`"
           alt
           style="width:30px;height:30px;"
         />
-        <span>{{user.nickname}}</span>
+        <span>{{$store.state.loginname}}</span>
         <span>
           <CaretDownOutlined />
         </span>
+        <div class="position-r border" style="z-index:10;top:-10px;" v-if="flaghead">
+          <a-dropdown>
+            <a-menu>
+              <a-menu-item @click="Personal">个人中心</a-menu-item>
+              <a-menu-item @click="signout">退出登录</a-menu-item>
+            </a-menu>
+          </a-dropdown>
+        </div>
       </div>
     </div>
   </div>
@@ -47,6 +55,8 @@ import {
 } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Userregister } from "../types/index";
+import { useStore } from "vuex";
+import { message } from "ant-design-vue";
 interface Nav {
   title: string;
   path: string;
@@ -56,6 +66,7 @@ interface Data {
   nav: Nav[];
   user: Userregister;
   flag: boolean;
+  flaghead: boolean;
 }
 export default defineComponent({
   name: "",
@@ -64,6 +75,7 @@ export default defineComponent({
   setup(props, ctx: SetupContext) {
     const route = useRoute();
     const router = useRouter();
+    const store = useStore();
     const data: Data = reactive<Data>({
       name: "jack",
       nav: [
@@ -73,28 +85,62 @@ export default defineComponent({
         { title: "国内机票", path: "/ticket" }
       ],
       user: {},
-      flag: false
+      flag: false,
+      flaghead: false
     });
+    // 跳转页面
     const clicknav = (item: any): void => {
       router.push(`${item.path}`);
       //   console.log(item);
     };
+    // 跳转登录页
     const gotologin = (): void => {
       router.push("/login");
     };
+    // 鼠标移入
+    const enter = (): void => {
+      data.flaghead = true;
+    };
+    // 鼠标移出
+    const leave = (): void => {
+      data.flaghead = false;
+    };
+    // 个人主页
+    const Personal = (): void => {
+      message.warning("个人主页暂未开通,敬请期待");
+    };
+    // 退出登录
+    const signout = (): void => {
+      data.flaghead = false;
+      localStorage.removeItem("user");
+      store.commit("setname", {
+        name: "",
+        head: ""
+      });
+    };
     onMounted(() => {
-      console.log(route.path);
+      // 是否登录展示
       if (localStorage.getItem("user")) {
         data.user = JSON.parse(localStorage.getItem("user")!);
-        data.flag = true;
+        store.commit("setname", {
+          name: data.user.nickname!,
+          head: data.user.defaultAvatar!
+        });
       } else {
-        data.flag = false;
+        store.commit("setname", {
+          name: "",
+          head: ""
+        });
       }
     });
     return {
       ...toRefs(data),
       clicknav,
-      gotologin
+      gotologin,
+      enter,
+      leave,
+      Personal,
+      signout
     };
   }
 });

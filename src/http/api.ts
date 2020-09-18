@@ -69,7 +69,15 @@ export default {
     return service.get("/posts/cities");
   },
   //文章详情
-  getposts() {
-    return service.get("/posts");
+  getposts({ city }: { city: string }) {
+    if (city) {
+      return service.get(`/posts?city=${city}`);
+    } else {
+      return service.get("/posts");
+    }
+  },
+  //文章详情
+  getgetpostsdetail({ id }: { id: string }) {
+    return service.get(`/posts?id=${id}`);
   },
 };

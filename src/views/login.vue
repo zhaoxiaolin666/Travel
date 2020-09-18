@@ -119,6 +119,7 @@ import {
 import { message } from "ant-design-vue";
 import { Password } from "ant-design-vue/types/input/password";
 import api from "../http/api";
+import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import { Form } from "ant-design-vue/types/form/form.d";
 interface Data {
@@ -139,6 +140,7 @@ export default defineComponent({
   setup(props, ctx: SetupContext) {
     const router = useRouter();
     const route = useRoute();
+    const store = useStore();
     const ruleForm = ref<Form>();
     const ruleForms = ref<Form>();
     const data: Data = reactive<Data>({
@@ -227,6 +229,11 @@ export default defineComponent({
                   "user",
                   JSON.stringify(data.Resregister.user)
                 );
+                const nickname111 = data.Resregister.user!;
+                store.commit("setname", {
+                  name: nickname111.nickname!,
+                  head: nickname111.defaultAvatar!
+                });
                 router.push("/home");
               }
               console.log(res);
@@ -287,6 +294,16 @@ export default defineComponent({
                     "user",
                     JSON.stringify(data.Resregister.user)
                   );
+                  const nickname111 = data.Resregister.user!;
+                  store.commit("setname", {
+                    name: nickname111.nickname!,
+                    head: nickname111.defaultAvatar!
+                  });
+                  //   const nickname111 = data.Resregister.user!;
+                  //   store.commit("setname", {
+                  //     name: nickname111.nickname!,
+                  //     head: nickname111.defaultAvatar!
+                  //   });
                   router.push("/home");
                 }
                 console.log(res);
@@ -302,6 +319,10 @@ export default defineComponent({
     };
     onMounted(() => {
       data.picture = JSON.parse(localStorage.getItem("picture")! as string);
+      //   store.commit("setname", {
+      //     name: "123"
+      //   });
+      //   console.log(store.state.liginname, 1111);
     });
     return {
       ...toRefs(data),

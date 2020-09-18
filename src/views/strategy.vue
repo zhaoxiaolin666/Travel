@@ -2,7 +2,7 @@
   <div style="width:100vw;" class="flex j-center bj-f">
     <div class="flex" style="width:70vw;">
       <!-- 左边 -->
-      <div style="width:30%;padding-top:20px;z-index:5;" class="position-r">
+      <div style="width:30%;padding:20px 0;z-index:5;" class="position-r">
         <div style="border-top:1px solid #ccc;border-left:1px solid #ccc;">
           <div v-for="(item,index) in resdata" :key="index">
             <div
@@ -16,10 +16,10 @@
               <div>
                 <RightOutlined />
               </div>
-              <!-- 定位的元素 -->
+              <!-- 定位的子元素 -->
               <div
                 class="position-a"
-                style="left:336px;top:20px;width:320px;height:210px;"
+                style="left:336px;top:20px;width:320px;"
                 :class="flag===index? 'borders':''"
                 v-if="flag===index"
               >
@@ -33,7 +33,7 @@
               </div>
               <div
                 class="position-a"
-                style="width:1px;height:38px;top:192px;left:335px;background-color:#ccc;"
+                style="width:1px;height:35px;top:192px;left:335px;background-color:#ccc;"
                 v-if="flag===index"
               ></div>
             </div>
@@ -60,7 +60,7 @@
           <div>推荐:</div>
           <div class="flex">
             <div v-for="(item,index) in citys" :key="index">
-              <div style="margin:0 10px;" class="recommend">{{item.name}}</div>
+              <div style="margin:0 10px;" class="recommend" @click="gotocity(item)">{{item.name}}</div>
             </div>
           </div>
         </div>
@@ -70,23 +70,57 @@
             style="font-size:20px;font-weight:500;color:#ffa500;border-bottom:2px solid #ffa500;padding:10px 0;"
           >推荐攻略</div>
           <div style="padding:10px 0;">
-            <a-button type="primary">
+            <a-button type="primary" @click="gotocreate">
               <EditOutlined />写游记
             </a-button>
           </div>
         </div>
         <div>
-          <div v-for="(item,index) in Resposts111" :key="index">
-            <div class="title">{{item.title}}</div>
-            <div class="summary">{{item.summary}}</div>
-            <div v-if="item.images.length" class="flex j-between">
-              <div
-                v-for="(item1,index1) in item.images.splice(0,3)"
-                :key="index1"
-                style="width:200px;height:150px;"
-              >
-                <img :src="item1" alt style="width:250px;height:150px;" />
+          <div
+            v-for="(item,index) in Resposts111"
+            :key="index"
+            style="border-bottom:1px solid #ccc;margin-bottom:10px;"
+            @click="postdetail(item)"
+          >
+            <div :class="item.images.length===1? 'dis':''">
+              <div :class="item.images.length===1? 'dis111':''">
+                <div class="title">{{item.title}}</div>
+                <div class="summary" style>{{item.summary}}</div>
               </div>
+              <div v-if="item.images.length" :class="item.images.length===2? 'photo2' : 'photo1'">
+                <div
+                  v-for="(item1,index1) in item.images.splice(0,3)"
+                  :key="index1"
+                  style="width:200px;height:150px;"
+                >
+                  <img
+                    :src="item1"
+                    alt
+                    style="flex:1;width:100%;height:150px;padding:10px 10px 10px 0;"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="flex j-between">
+              <div class="flex111">
+                <div style="height:14px;width:14px;">
+                  <EnvironmentOutlined />
+                </div>
+                <div>{{item.cityName}}</div>
+                <div>by</div>
+                <div>
+                  <img
+                    :src="`http://157.122.54.189:9095${item.account.defaultAvatar}`"
+                    style="height:14px;width:14px;"
+                  />
+                </div>
+                <div>{{item.account.nickname}}</div>
+                <div style="height:14px;width:14px;">
+                  <EyeOutlined />
+                </div>
+                <div>{{item.watch}}</div>
+              </div>
+              <div style="color:#ffa500">{{item.watch}}赞</div>
             </div>
           </div>
         </div>
@@ -112,6 +146,7 @@ import {
 } from "../types/index";
 import api from "../http/api";
 import child from "@/components/child.vue";
+import { useRoute, useRouter } from "vue-router";
 interface Citysname {
   name: string;
 }
@@ -123,12 +158,15 @@ interface Data {
   value: string;
   citys: Citysname[];
   Resposts111: RespostsItem[];
+  number: number;
 }
 export default defineComponent({
   name: "",
   props: {},
   components: {},
   setup(props, ctx: SetupContext) {
+    const route = useRoute();
+    const router = useRouter();
     const data: Data = reactive<Data>({
       name: "jack",
       resdata: {},
@@ -136,8 +174,10 @@ export default defineComponent({
       child: [],
       value: "",
       citys: [{ name: "广州" }, { name: "上海" }, { name: "北京" }],
-      Resposts111: []
+      Resposts111: [],
+      number: 0
     });
+    //移入
     const enter = (
       item: RespostscitiesItem,
       index: RespostscitiesItem
@@ -146,14 +186,19 @@ export default defineComponent({
       data.flag = index! as string;
       //   console.log(item);
     };
+    //移出
     const leave = (item: RespostscitiesItem): void => {
       data.child = [];
       data.flag = "-1";
     };
-    const onSearch = (): void => {
-      console.log(111);
+
+    //跳转旅游攻略详情
+    const postdetail = (item: RespostsItem): void => {
+      router.push({ path: "/strategy/deteil", query: { id: item.id } });
+      console.log(item.id);
     };
-    onMounted(() => {
+    //城市菜单列表
+    const getpostscities = (): void => {
       api
         .getpostscities()
         .then((res: Respostscities) => {
@@ -163,8 +208,11 @@ export default defineComponent({
         .catch((err: any) => {
           console.log(err);
         });
+    };
+    //文章详情
+    const getposts = (): void => {
       api
-        .getposts()
+        .getposts({ city: data.value })
         .then((res: Resposts) => {
           data.Resposts111 = res.data! as RespostsItem[];
           console.log(data.Resposts111);
@@ -172,12 +220,41 @@ export default defineComponent({
         .catch((err: any) => {
           console.log(err);
         });
+    };
+    //更改城市
+    const gotocity = (item: Citysname): void => {
+      data.value = item.name;
+      console.log(data.value);
+      if (data.value !== "") {
+        getposts();
+      }
+    };
+    //搜索
+    const onSearch = (value: any): void => {
+      console.log(value);
+      data.value = value!;
+      getposts();
+    };
+    //跳转写游记
+    const gotocreate = (): void => {
+      router.push("/strategy/create");
+    };
+    onMounted(() => {
+      getpostscities();
+      getposts();
     });
     return {
       ...toRefs(data),
       enter,
       leave,
-      onSearch
+      onSearch,
+      postdetail,
+      route,
+      router,
+      getpostscities,
+      getposts,
+      gotocity,
+      gotocreate
     };
   }
 });
@@ -210,7 +287,33 @@ export default defineComponent({
   -webkit-box-orient: vertical;
 }
 .title {
-  font-size: 20px;
+  width: 100%;
+  font-size: 18px;
   padding: 15px 0;
+}
+.title:hover {
+  color: #ffa500;
+  cursor: default;
+}
+.dis {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+.dis111 {
+  padding: 15px;
+}
+.photo1 {
+  display: flex;
+  justify-content: space-between;
+}
+.photo2 {
+  display: flex;
+}
+.flex111 {
+  display: flex;
+  div {
+    margin-right: 5px;
+  }
 }
 </style>

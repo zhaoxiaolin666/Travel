@@ -2,12 +2,14 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    // path: "",
+    loginhead: "",
+    loginname: "",
   },
   mutations: {
-    // setpath(state, data) {
-    //   state.path = data;
-    // },
+    setname(state, data) {
+      state.loginhead = data.head;
+      state.loginname = data.name;
+    },
   },
   actions: {},
   modules: {},

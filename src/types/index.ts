@@ -124,7 +124,7 @@ export interface RespostsItem {
   created_at?: number;
   id?: number;
   images?: images111[];
-  like?: null;
+  like?: number;
   likeIds?: null;
   postkind?: null;
   scenic?: null;
@@ -132,6 +132,7 @@ export interface RespostsItem {
   title?: string;
   updated_at?: number;
   watch?: number;
+  timer?: string;
 }
 export interface accountItem {
   created_at?: number;
