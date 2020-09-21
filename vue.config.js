@@ -1,5 +1,10 @@
 // vue的配置文件
 module.exports = {
+    //额外的webpack配置使用一个回调函数来返回新的config
+    // configureWebpack: (config) => {
+    //     config.externals = { AMap: "AMap" };
+    // },
+    lintOnSave: false,
     devServer: {
         proxy: {
             "/api": {

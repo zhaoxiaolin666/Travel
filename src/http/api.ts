@@ -80,4 +80,26 @@ export default {
   getgetpostsdetail({ id }: { id: string }) {
     return service.get(`/posts?id=${id}`);
   },
+  //实时机票城市
+  getairscity({ name }: { name: string }) {
+    return service.get(`/airs/city?name=${name}`);
+  },
+  //机票列表
+  getairslist({
+    departCity,
+    departCode,
+    destCity,
+    destCode,
+    departDate,
+  }: {
+    departCity: string;
+    departCode: string;
+    destCity: string;
+    destCode: string;
+    departDate: string;
+  }) {
+    return service.get(
+      `/airs?departCity=${departCity}&departCode=${departCode}&destCity=${destCity}&destCode=${destCode}&departDate=${departDate}`
+    );
+  },
 };

@@ -8,6 +8,7 @@ import {
 } from "vue-router";
 import layout from "../views/layout.vue";
 import strategy111 from "../views/strategy111.vue";
+import ticket111 from "../views/ticket111.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -73,23 +74,33 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "/ticket",
-        name: "ticket",
-        component: () => import("../views/ticket.vue"),
+        path: "/ticket111",
+        name: "ticket111",
+        component: ticket111,
         meta: {
           title: "国内机票",
           parentpath: "/ticket",
         },
-        // children: [
-        //   {
-        //     path: "/ticket/flights",
-        //     name: "ticketflights",
-        //     component: () => import("../views/air/ticketflights.vue"),
-        //     meta: {
-        //       title: "机票列表",
-        //     },
-        //   },
-        // ],
+        children: [
+          {
+            path: "/ticket",
+            name: "ticket",
+            component: () => import("../views/ticket.vue"),
+            meta: {
+              title: "国内机票",
+              parentpath: "/ticket",
+            },
+          },
+          {
+            path: "/ticket/flights",
+            name: "ticketflights",
+            component: () => import("../views/air/ticketflights.vue"),
+            meta: {
+              title: "机票列表",
+              parentpath: "/ticket",
+            },
+          },
+        ],
       },
       {
         path: "/login",
@@ -108,6 +119,7 @@ const routes: Array<RouteRecordRaw> = [
   //     component: () => import("../views/404.vue"),
   //     meta: {
   //       title: "404",
+  //       parentpath: "/404",
   //     },
   //   },
 ];

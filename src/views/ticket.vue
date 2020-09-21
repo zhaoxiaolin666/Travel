@@ -31,13 +31,21 @@
           </div>
           <div class="flex" style="margin:5px;">
             <!-- 表单 -->
-            <div style="width:350px;margin:30px 0;">
+            <div style="width:400px;margin:30px 0;">
               <a-form :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
                 <a-form-item label="出发城市">
-                  <a-input v-model:value="form.Startingcity" placeholder="请搜索出发城市" />
+                  <a-input
+                    v-model:value="form.Startingcity"
+                    placeholder="请搜索出发城市"
+                    @change="Starting"
+                  />
                 </a-form-item>
                 <a-form-item label="到达城市">
-                  <a-input v-model:value="form.Arrivingcity" placeholder="请搜索到达城市" />
+                  <a-input
+                    v-model:value="form.Arrivingcity"
+                    placeholder="请搜索到达城市"
+                    @change="Arriving"
+                  />
                 </a-form-item>
                 <a-form-item label="出发时间">
                   <a-date-picker
@@ -46,10 +54,13 @@
                     type="date"
                     placeholder="请选择日期"
                     style="width:100%;"
+                    format="YYYY-MM-DD"
+                    :disabled-date="disabledDate"
+                    @change="Onchange"
                   />
                 </a-form-item>
                 <div style="margin-left:56px;">
-                  <a-button type="primary" block>
+                  <a-button type="primary" block @click="searchticket">
                     <SearchOutlined />搜索
                   </a-button>
                 </div>
@@ -109,9 +120,12 @@ import {
   ref
 } from "vue";
 import api from "../http/api";
-import { Resairssale, ResairssaleItem } from "../types/index";
+import { Resairssale, ResairssaleItem, Resaircity } from "../types/index";
 import { Modal } from "ant-design-vue";
 import { Form } from "ant-design-vue/types/form/form.d";
+import moment from "moment";
+import "moment/locale/zh-cn";
+import { useRouter, useRoute } from "vue-router";
 interface LabelColItem {
   span: number;
 }
@@ -129,22 +143,31 @@ interface Data {
   wrapperCol: LabelColItem;
   form: FormItem;
   changeflag: string;
+  sort?: string;
+  departCode: string;
+  destCode: string;
 }
 export default defineComponent({
   name: "",
   props: {},
   components: {},
   setup(props, ctx: SetupContext) {
+    const router = useRouter();
+    const route = useRoute();
     const data: Data = reactive<Data>({
-      name: "jack",
+      name: "",
       ressale: {},
       title: "提示",
       content: "目前暂不支持往返,请选择单程选票",
       labelCol: { span: 4 },
       wrapperCol: { span: 20 },
       form: {},
-      changeflag: ""
+      changeflag: "",
+      sort: "",
+      departCode: "",
+      destCode: ""
     });
+    //消息提示
     const warning111 = (): void => {
       Modal.warning({
         title: data.title,
@@ -157,7 +180,101 @@ export default defineComponent({
       data.changeflag = data.form.Startingcity!;
       data.form.Startingcity = data.form.Arrivingcity!;
       data.form.Arrivingcity = data.changeflag!;
+      getairscity111();
+      getairscity222();
+    };
+    //出发城市代码
+    const getairscity111 = (): void => {
+      const a = data.form.Startingcity!;
+      api
+        .getairscity({ name: a })
+        .then((res: any) => {
+          if (res.total !== 0) {
+            data.departCode = res.data[0].sort!;
+          }
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    };
+    // 到达城市代码
+    const getairscity222 = (): void => {
+      const a = data.form.Arrivingcity!;
+      api
+        .getairscity({ name: a })
+        .then((res: any) => {
+          if (res.total !== 0) {
+            data.destCode = res.data[0].sort!;
+          }
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    };
+    //出发城市
+    const Starting = (): void => {
+      data.name = data.form.Startingcity!;
+      getairscity111();
+      console.log(data.form.Startingcity);
       console.log(data.form.day);
+    };
+    //到达城市
+    const Arriving = (value: any): void => {
+      data.name = data.form.Startingcity!;
+      getairscity222();
+      console.log(data.form.Arrivingcity);
+    };
+    //禁用时间
+    const disabledDate = (current: any) => {
+      // Can not select days before today and today
+      return current && current < moment().endOf("day");
+    };
+    //时间
+    const Onchange = (date: any, dateString: any): void => {
+      data.form.day = dateString;
+      //   console.log(dateString, "123456");
+      //   console.log(date, "123456");
+    };
+    const searchticket = (): void => {
+      console.log(data.departCode, "出发");
+      console.log(data.destCode, "到达");
+      console.log(data.form.Startingcity, "出发城市");
+      console.log(data.form.Arrivingcity, "到达城市");
+      console.log(data.form.day, "时间");
+      api
+        .getairslist({
+          departCity: data.form.Startingcity!,
+          departCode: data.departCode!,
+          destCity: data.form.Arrivingcity!,
+          destCode: data.destCode!,
+          departDate: data.form.day!
+        })
+        .then((res: any) => {
+          if (res.flights.length > 0) {
+            router.push({
+              path: "/ticket/flights",
+              query: {
+                departCity: data.form.Startingcity!,
+                departCode: data.departCode!,
+                destCity: data.form.Arrivingcity!,
+                destCode: data.destCode!,
+                departDate: data.form.day!
+              }
+            });
+          } else {
+            Modal.warning({
+              title: data.title,
+              content: "暂无机票,敬请期待",
+              okText: "确定"
+            });
+          }
+          console.log(res);
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
     };
     onMounted(() => {
       api
@@ -173,7 +290,14 @@ export default defineComponent({
     return {
       ...toRefs(data),
       warning111,
-      clickchange
+      clickchange,
+      Starting,
+      Arriving,
+      getairscity111,
+      getairscity222,
+      disabledDate,
+      Onchange,
+      searchticket
     };
   }
 });

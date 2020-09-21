@@ -8,5 +8,8 @@ declare module "axios" {
     message: string;
     token: string;
     user: T;
+    flights: T;
+    info: T;
+    options: T;
   }
 }
