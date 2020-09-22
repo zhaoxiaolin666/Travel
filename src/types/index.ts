@@ -225,6 +225,7 @@ export interface flightsItem {
   plane_size: string;
   seat_infos: seat_infositem[];
   updated_at: number;
+  time111?: string;
 }
 export interface seat_infositem {
   updated_at: number;

@@ -2,8 +2,8 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    loginhead: "",
-    loginname: "",
+    loginhead: "", //登录头像
+    loginname: "", //登录名字
   },
   mutations: {
     setname(state, data) {

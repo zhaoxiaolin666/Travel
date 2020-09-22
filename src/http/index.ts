@@ -13,11 +13,20 @@ const service: AxiosInstance = axios.create({
   timeout: 10000,
 });
 
-//相应拦截
+//请求拦截
 service.interceptors.request.use(
   (config: AxiosRequestConfig): AxiosRequestConfig => {
     nprogress.start();
+     //前后端鉴权
+        //jwt:JSON WEB TOKEN
+        //登陆成功之后后端会返回一个令牌
     const token = localStorage.getItem("token");
+    // if (token) {
+    //     //需要在请求头中添加token
+    //     config.headers["Authorization"] = token;
+    // } else {
+    //     message.error("请重新登录");
+    // }
     return config;
   },
   (err: AxiosError) => {
@@ -27,7 +36,7 @@ service.interceptors.request.use(
   }
 );
 
-//相应拦截
+//响应拦截
 service.interceptors.response.use(
   (res: AxiosResponse): AxiosResponse => {
     nprogress.done();

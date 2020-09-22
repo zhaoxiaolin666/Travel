@@ -31,7 +31,7 @@
         <span>
           <CaretDownOutlined />
         </span>
-        <div class="position-r border" style="z-index:10;top:-10px;" v-if="flaghead">
+        <div class="position-r" style="z-index:10;top:-10px;border:1px solid #eee;" v-if="flaghead">
           <a-dropdown>
             <a-menu>
               <a-menu-item @click="Personal">个人中心</a-menu-item>

@@ -77,7 +77,7 @@
         </div>
         <div>
           <div
-            v-for="(item,index) in Resposts111"
+            v-for="(item,index) in Resposts111.slice((current-1)*pageSize,pageSize*current)"
             :key="index"
             style="border-bottom:1px solid #ccc;margin-bottom:10px;"
             @click="postdetail(item)"
@@ -124,6 +124,16 @@
             </div>
           </div>
         </div>
+        <!-- 分页 -->
+        <div style="margin-bottom:15px;">
+          <a-pagination
+            show-quick-jumper
+            v-model:current="current"
+            v-model:pageSize="pageSize"
+            :total="Resposts111.length"
+            :show-total="(total, range) => `${range[0]}-${range[1]} 共 ${total} 条`"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -159,6 +169,8 @@ interface Data {
   citys: Citysname[];
   Resposts111: RespostsItem[];
   number: number;
+  current: number;
+  pageSize: number;
 }
 export default defineComponent({
   name: "",
@@ -175,7 +187,9 @@ export default defineComponent({
       value: "",
       citys: [{ name: "广州" }, { name: "上海" }, { name: "北京" }],
       Resposts111: [],
-      number: 0
+      number: 0,
+      current: 1,
+      pageSize: 3
     });
     //移入
     const enter = (

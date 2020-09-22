@@ -93,7 +93,7 @@
       </div>
       <div class="flex j-between border position-r" style="padding:15px 0;">
         <div v-for="(item,index) in ressale" :key="index" style="flex:1;" class="t-center">
-          <img :src="ressale[0].cover" alt style="width:90%;height:200px;" />
+          <img :src="ressale[0].cover" alt style="width:90%;height:200px;" @click="goto(item)" />
           <div class="flex j-center">
             <div
               class="position-a flex j-around border bj-b"
@@ -215,14 +215,14 @@ export default defineComponent({
     };
     //出发城市
     const Starting = (): void => {
-      data.name = data.form.Startingcity!;
+      //   data.name = data.form.Startingcity!;
       getairscity111();
       console.log(data.form.Startingcity);
       console.log(data.form.day);
     };
     //到达城市
     const Arriving = (value: any): void => {
-      data.name = data.form.Startingcity!;
+      //   data.name = data.form.Startingcity!;
       getairscity222();
       console.log(data.form.Arrivingcity);
     };
@@ -276,6 +276,20 @@ export default defineComponent({
           console.log(err);
         });
     };
+    //图片跳转
+    const goto = (item: any): void => {
+      console.log(item, "跳转参数");
+      router.push({
+        path: "/ticket/flights",
+        query: {
+          departCity: item.departCity!,
+          departCode: item.departCode!,
+          destCity: item.destCity!,
+          destCode: item.destCode!,
+          departDate: item.departDate!
+        }
+      });
+    };
     onMounted(() => {
       api
         .getairssale()
@@ -297,7 +311,8 @@ export default defineComponent({
       getairscity222,
       disabledDate,
       Onchange,
-      searchticket
+      searchticket,
+      goto
     };
   }
 });
