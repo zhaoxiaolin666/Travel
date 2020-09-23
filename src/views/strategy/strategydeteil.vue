@@ -41,7 +41,7 @@
             list-type="picture-card"
             class="avatar-uploader"
             :show-upload-list="false"
-            action="/api/upload"
+            :action="api/upload"
             :before-upload="beforeUpload"
           >
             <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
@@ -122,6 +122,7 @@ export default defineComponent({
       api
         .getgetpostsdetail({ id: data.id })
         .then((res: Resposts) => {
+            console.log(res,'jagvjhbajbcf')
           data.postsdetail = res.data! as RespostsItem[];
           data.postsdetail.map(item => {
             const a = item.updated_at!;

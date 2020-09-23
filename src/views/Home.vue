@@ -68,7 +68,11 @@ export default defineComponent({
       flag: 1
     });
     const onSearch = (value: any): void => {
-      console.log(value);
+      if (data.flag === 1) {
+        router.push({ path: "/strategy", query: { value: data.value } });
+      } else if (data.flag === 2) {
+        router.push("/hotel");
+      }
     };
     const Strategy = (): void => {
       data.flag = 1;

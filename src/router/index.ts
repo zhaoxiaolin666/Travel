@@ -100,6 +100,15 @@ const routes: Array<RouteRecordRaw> = [
               parentpath: "/ticket",
             },
           },
+          {
+            path: "/ticket/order",
+            name: "ticketorder",
+            component: () => import("../views/air/airorder.vue"),
+            meta: {
+              title: "机票订单",
+              parentpath: "/ticket",
+            },
+          },
         ],
       },
       {

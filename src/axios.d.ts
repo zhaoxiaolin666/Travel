@@ -11,5 +11,6 @@ declare module "axios" {
     flights: T;
     info: T;
     options: T;
+    nextStart: number;
   }
 }

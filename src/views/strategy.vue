@@ -85,9 +85,9 @@
             <div :class="item.images.length===1? 'dis':''">
               <div :class="item.images.length===1? 'dis111':''">
                 <div class="title">{{item.title}}</div>
-                <div class="summary" style>{{item.summary}}</div>
+                <div class="summary">{{item.summary}}</div>
               </div>
-              <div v-if="item.images.length" :class="item.images.length===2? 'photo2' : 'photo1'">
+              <div class="flex j-between">
                 <div
                   v-for="(item1,index1) in item.images.splice(0,3)"
                   :key="index1"
@@ -95,7 +95,6 @@
                 >
                   <img
                     :src="item1"
-                    alt
                     style="flex:1;width:100%;height:150px;padding:10px 10px 10px 0;"
                   />
                 </div>
@@ -155,7 +154,6 @@ import {
   RespostsItem
 } from "../types/index";
 import api from "../http/api";
-import child from "@/components/child.vue";
 import { useRoute, useRouter } from "vue-router";
 interface Citysname {
   name: string;
@@ -163,11 +161,13 @@ interface Citysname {
 interface Data {
   name: string;
   resdata: RespostscitiesItem;
-  flag: string;
+  flag: number;
   child: childrenItem[];
   value: string;
   citys: Citysname[];
-  Resposts111: RespostsItem[];
+  //   Resposts111: RespostsItem[];
+  Resposts111: [];
+  arr: any[];
   number: number;
   current: number;
   pageSize: number;
@@ -182,28 +182,25 @@ export default defineComponent({
     const data: Data = reactive<Data>({
       name: "jack",
       resdata: {},
-      flag: "-1",
+      flag: -1,
       child: [],
       value: "",
       citys: [{ name: "广州" }, { name: "上海" }, { name: "北京" }],
       Resposts111: [],
       number: 0,
       current: 1,
-      pageSize: 3
+      pageSize: 3,
+      arr: []
     });
     //移入
-    const enter = (
-      item: RespostscitiesItem,
-      index: RespostscitiesItem
-    ): void => {
+    const enter = (item: RespostscitiesItem, index: number): void => {
+      data.flag = index;
       data.child = item.children!;
-      data.flag = index! as string;
-      //   console.log(item);
     };
     //移出
     const leave = (item: RespostscitiesItem): void => {
       data.child = [];
-      data.flag = "-1";
+      data.flag = -1;
     };
 
     //跳转旅游攻略详情
@@ -227,9 +224,11 @@ export default defineComponent({
     const getposts = (): void => {
       api
         .getposts({ city: data.value })
-        .then((res: Resposts) => {
-          data.Resposts111 = res.data! as RespostsItem[];
-          console.log(data.Resposts111);
+        .then((res: any) => {
+          //   localStorage.setItem("Resposts", JSON.stringify(res));
+          //   const aaa = JSON.parse(localStorage.getItem("Resposts")!);
+          console.log(res, 232323);
+          data.Resposts111 = res.data;
         })
         .catch((err: any) => {
           console.log(err);
@@ -254,6 +253,9 @@ export default defineComponent({
       router.push("/strategy/create");
     };
     onMounted(() => {
+      if (route.query.value) {
+        data.value = route.query.value! as string;
+      }
       getpostscities();
       getposts();
     });
@@ -263,8 +265,6 @@ export default defineComponent({
       leave,
       onSearch,
       postdetail,
-      route,
-      router,
       getpostscities,
       getposts,
       gotocity,

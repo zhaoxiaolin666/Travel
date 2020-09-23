@@ -8,39 +8,51 @@
           <!-- 筛选条件 -->
           <div class="flex cont">
             <div>
-              <a-select v-model:value="value" style="width:120px" ref="select" placeholder="起飞机场">
-                <a-select-option
-                  :value="item"
-                  v-for="(item,index) in options.airport"
-                  :key="index"
-                >{{item}}</a-select-option>
+              <a-select
+                v-model:value="value111"
+                style="width:120px"
+                ref="select1"
+                placeholder="起飞机场"
+              >
+                <a-select-option :value="item" v-for="(item,index) in options.airport" :key="index">
+                  <div @click="clickairport(item)">{{item}}</div>
+                </a-select-option>
               </a-select>
             </div>
             <div>
-              <a-select v-model:value="value" style="width:120px" ref="select" placeholder="起飞时间">
+              <a-select
+                v-model:value="value222"
+                style="width:120px"
+                ref="select2"
+                placeholder="起飞时间"
+              >
                 <a-select-option
-                  :value="item"
+                  :value="`${item.from}:00 - ${item.to}:00`"
+                  ref="select3"
                   v-for="(item,index) in options.flightTimes"
                   :key="index"
-                >{{item.from}}:00 - {{item.to}}:00</a-select-option>
+                >
+                  <div @click="clicktime(item.from)">{{item.from}}:00 - {{item.to}}:00</div>
+                </a-select-option>
               </a-select>
             </div>
             <div>
-              <a-select v-model:value="value" style="width:120px" ref="select" placeholder="航空公司">
-                <a-select-option
-                  :value="item"
-                  v-for="(item,index) in options.company"
-                  :key="index"
-                >{{item}}</a-select-option>
+              <a-select
+                v-model:value="value333"
+                style="width:120px"
+                ref="select3"
+                placeholder="航空公司"
+              >
+                <a-select-option :value="item" v-for="(item,index) in options.company" :key="index">
+                  <div @click="clickcompany(item)">{{item}}</div>
+                </a-select-option>
               </a-select>
             </div>
             <div>
-              <a-select v-model:value="value" style="width:120px" ref="select" placeholder="机型">
-                <a-select-option
-                  :value="item.name"
-                  v-for="(item,index) in size"
-                  :key="index"
-                >{{item.name}}</a-select-option>
+              <a-select v-model:value="value444" style="width:120px" ref="select4" placeholder="机型">
+                <a-select-option :value="item.name" v-for="(item,index) in size" :key="index">
+                  <div @click="clicksize(item.size)">{{item.name}}</div>
+                </a-select-option>
               </a-select>
             </div>
           </div>
@@ -48,7 +60,7 @@
         <div>
           <span style="margin:10px 15px 0 0;">筛选:</span>
           <span>
-            <a-button type="primary">撤销</a-button>
+            <a-button type="primary" @click="cancel">撤销</a-button>
           </span>
         </div>
         <!-- 机票头部 -->
@@ -63,11 +75,15 @@
         </div>
         <!-- 实时机票 -->
         <div
-          v-for="(item,index) in flights.slice((current-1)*pageSize,pageSize*current)"
+          v-for="(item,index) in flights111.slice((current-1)*pageSize,pageSize*current)"
           :key="index"
         >
-          <div style="margin:5px 0;" @click="opens(index)" class="border">
-            <div class="flex j-around a-center c-default" style="padding:10px 0;">
+          <div style="margin:5px 0;" class="border">
+            <div
+              class="flex j-around a-center c-default"
+              style="padding:10px 0;"
+              @click="opens(index)"
+            >
               <div
                 style="font-weight:600;width:25%;text-align:center;"
               >{{item.airline_name}}{{item.flight_no}}</div>
@@ -112,7 +128,7 @@
                         <div style="font-size:24px;color:#FFA500;">￥{{item1.par_price}}</div>
                         <div>
                           <div>
-                            <a-button type="warning">选定</a-button>
+                            <a-button type="warning" @click="gotoairorder">选定</a-button>
                           </div>
                           <div class="t-center">剩余:{{item1.discount}}</div>
                         </div>
@@ -133,7 +149,7 @@
             show-size-changer
             v-model:current="current"
             v-model:pageSize="pageSize"
-            :total="flights.length"
+            :total="flights111.length"
             :show-total="(total, range) => `${range[0]}-${range[1]} 共 ${total} 条`"
             @change="ChangepageNumber"
           >
@@ -152,7 +168,9 @@
         <div style="margin-top:10px;width:100%;" class="border">
           <div style="margin:10px;">
             <div style="border-bottom:1px solid #eee;margin-bottom:5px;">历史查询</div>
-            <div></div>
+            <div style="text-align:center;">
+              <img src="../../assets/lishi.png" alt />
+            </div>
           </div>
         </div>
       </div>
@@ -187,10 +205,15 @@ interface Data {
   options: optionsItem;
   size?: sizeItem[];
   flights?: flightsItem[];
+  flights111?: flightsItem[];
   current: number;
   pageSize: number;
   flag: number;
   pageSizeOptions: [string, string, string, string, string];
+  value111: string;
+  value222: string;
+  value333: string;
+  value444: string;
 }
 export default defineComponent({
   name: "",
@@ -211,20 +234,28 @@ export default defineComponent({
       options: {},
       size: [
         {
-          name: "大"
+          name: "大",
+          size: "L"
         },
         {
-          name: "中"
+          name: "中",
+          size: "M"
         },
         {
-          name: "小"
+          name: "小",
+          size: "S"
         }
       ],
       flights: [],
+      flights111: [],
       current: 1,
       pageSize: 5,
       flag: -1,
-      pageSizeOptions: ["5", "10", "15", "20", "100"]
+      pageSizeOptions: ["5", "10", "15", "20", "100"],
+      value111: "",
+      value222: "",
+      value333: "",
+      value444: ""
     });
     //分页
     const onShowSizeChange = (current: number, pageSize: number): void => {
@@ -263,6 +294,8 @@ export default defineComponent({
               item.time111 = `${a}时${b}分`;
             }
           });
+          data.flights111 = data.flights;
+          console.log(data.flights111);
           console.log(data.flights);
         })
         .catch((err: any) => {
@@ -282,6 +315,76 @@ export default defineComponent({
         console.log(index, data.flag, 111);
       }
     };
+    //筛选机场
+    const clickairport = (value: string): void => {
+      data.flights111 = data.flights;
+      const flights222 = []! as flightsItem[];
+      const flights333 = data.flights111!;
+      flights333.map(item => {
+        if (item.org_airport_name === value) {
+          flights222.push(item);
+        }
+      });
+      data.flights111 = flights222!;
+    };
+    //筛选公司
+    const clickcompany = (value: string): void => {
+      data.flights111 = data.flights;
+      const flights222 = []! as flightsItem[];
+      const flights333 = data.flights111!;
+      flights333.map(item => {
+        if (item.airline_name === value) {
+          flights222.push(item);
+        }
+      });
+      data.flights111 = flights222!;
+    };
+    //筛选起飞时间
+    const clicktime = (value: string): void => {
+      data.flights111 = data.flights;
+      const flights222 = []! as flightsItem[];
+      const flights333 = data.flights111!;
+      flights333.map(item => {
+        const time111 = item.dep_time.substr(0, 2);
+        const time222 = item.dep_time.substr(0, 1);
+        console.log(time111, time222);
+        if (time222 === "0") {
+          const time333 = item.dep_time.substr(1, 2);
+          if (time333 >= value) {
+            flights222.push(item);
+          }
+        } else {
+          console.log(222);
+          if (time111 >= value) {
+            flights222.push(item);
+          }
+        }
+      });
+      data.flights111 = flights222!;
+    };
+    //筛选机型
+    const clicksize = (value: string): void => {
+      data.flights111 = data.flights;
+      const flights222 = []! as flightsItem[];
+      const flights333 = data.flights111!;
+      flights333.map(item => {
+        if (item.plane_size === value) {
+          flights222.push(item);
+        }
+      });
+      data.flights111 = flights222!;
+    };
+    //撤销
+    const cancel = (): void => {
+      data.value111 = "";
+      data.value222 = "";
+      data.value333 = "";
+      data.value444 = "";
+      data.flights111 = data.flights;
+    };
+    const gotoairorder = (): void => {
+      router.push("/ticket/order");
+    };
     onMounted(() => {
       data.departCity = route.query.departCity! as string;
       data.departCode = route.query.departCode! as string;
@@ -294,7 +397,13 @@ export default defineComponent({
       ...toRefs(data),
       ChangepageNumber,
       opens,
-      onShowSizeChange
+      onShowSizeChange,
+      clickairport,
+      clickcompany,
+      clicksize,
+      cancel,
+      clicktime,
+      gotoairorder
     };
   }
 });

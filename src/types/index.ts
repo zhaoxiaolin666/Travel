@@ -113,6 +113,9 @@ export interface Resposts {
   data?: RespostsItem;
   total?: number;
 }
+export interface images111 {
+  [key: string]: string;
+}
 // data文章详情
 export interface RespostsItem {
   account?: accountItem;
@@ -170,9 +173,6 @@ export interface comments111 {
   score?: null;
   type?: number;
   updated_at?: number;
-}
-export interface images111 {
-  [key: string]: string;
 }
 
 //实时机票城市
