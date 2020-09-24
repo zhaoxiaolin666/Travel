@@ -110,7 +110,7 @@ export interface childrenItem {
 }
 //文章详情
 export interface Resposts {
-  data?: RespostsItem;
+  data?: RespostsItem[];
   total?: number;
 }
 export interface images111 {

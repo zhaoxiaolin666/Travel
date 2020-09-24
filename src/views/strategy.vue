@@ -4,15 +4,15 @@
       <!-- 左边 -->
       <div style="width:30%;padding:20px 0;z-index:5;" class="position-r">
         <div style="border-top:1px solid #ccc;border-left:1px solid #ccc;">
-          <div v-for="(item,index) in resdata" :key="index">
+          <div v-for="(item, index) in resdata" :key="index">
             <div
               class="flex j-between"
               style="padding:10px 20px;border-bottom:1px solid #ccc;"
-              :class="flag===index? 'color' : 'color1'"
-              @mouseenter="enter(item,index)"
+              :class="flag === index ? 'color' : 'color1'"
+              @mouseenter="enter(item, index)"
               @mouseleave="leave(item)"
             >
-              <div>{{item.type}}</div>
+              <div>{{ item.type }}</div>
               <div>
                 <RightOutlined />
               </div>
@@ -20,28 +20,41 @@
               <div
                 class="position-a"
                 style="left:336px;top:20px;width:320px;"
-                :class="flag===index? 'borders':''"
-                v-if="flag===index"
+                :class="flag === index ? 'borders' : ''"
+                v-if="flag === index"
               >
-                <div v-for="(item1,index1) in child" :key="index1">
+                <div v-for="(item1, index1) in child" :key="index1">
                   <div style="padding:2px 0;background:#fff;">
-                    <span style="font-size:24px;font-weight:500px;margin:0 10px;">{{index1+1}}</span>
-                    <span class="city">{{item1.city}}</span>
-                    <span style="color:#999;margin-left:10px;" class="city">{{item1.desc}}</span>
+                    <span
+                      style="font-size:24px;font-weight:500px;margin:0 10px;"
+                      >{{ index1 + 1 }}</span
+                    >
+                    <span class="city">{{ item1.city }}</span>
+                    <span style="color:#999;margin-left:10px;" class="city">{{
+                      item1.desc
+                    }}</span>
                   </div>
                 </div>
               </div>
               <div
                 class="position-a"
                 style="width:1px;height:35px;top:192px;left:335px;background-color:#ccc;"
-                v-if="flag===index"
+                v-if="flag === index"
               ></div>
             </div>
           </div>
         </div>
-        <div style="font-size:20px;padding:10px 0;border-bottom:1px solid #ccc;width:100%;">推荐城市</div>
+        <div
+          style="font-size:20px;padding:10px 0;border-bottom:1px solid #ccc;width:100%;"
+        >
+          推荐城市
+        </div>
         <div>
-          <img src="../assets/pic_sea.jpeg" alt style="height:200px;width:336px;margin-top:10px;" />
+          <img
+            src="../assets/pic_sea.jpeg"
+            alt
+            style="height:200px;width:336px;margin-top:10px;"
+          />
         </div>
       </div>
       <!-- 右边 -->
@@ -59,8 +72,14 @@
         <div class="flex" style="padding:10px 0;">
           <div>推荐:</div>
           <div class="flex">
-            <div v-for="(item,index) in citys" :key="index">
-              <div style="margin:0 10px;" class="recommend" @click="gotocity(item)">{{item.name}}</div>
+            <div v-for="(item, index) in citys" :key="index">
+              <div
+                style="margin:0 10px;"
+                class="recommend"
+                @click="gotocity(item)"
+              >
+                {{ item.name }}
+              </div>
             </div>
           </div>
         </div>
@@ -68,7 +87,9 @@
         <div class="flex j-between" style="border-bottom:1px solid #ccc;">
           <div
             style="font-size:20px;font-weight:500;color:#ffa500;border-bottom:2px solid #ffa500;padding:10px 0;"
-          >推荐攻略</div>
+          >
+            推荐攻略
+          </div>
           <div style="padding:10px 0;">
             <a-button type="primary" @click="gotocreate">
               <EditOutlined />写游记
@@ -77,19 +98,22 @@
         </div>
         <div>
           <div
-            v-for="(item,index) in Resposts111.slice((current-1)*pageSize,pageSize*current)"
+            v-for="(item, index) in Resposts222.slice(
+              (current - 1) * pageSize,
+              pageSize * current
+            )"
             :key="index"
             style="border-bottom:1px solid #ccc;margin-bottom:10px;"
             @click="postdetail(item)"
           >
-            <div :class="item.images.length===1? 'dis':''">
-              <div :class="item.images.length===1? 'dis111':''">
-                <div class="title">{{item.title}}</div>
-                <div class="summary">{{item.summary}}</div>
+            <div :class="item.images.length === 1 ? 'dis' : ''">
+              <div :class="item.images.length === 1 ? 'dis111' : ''">
+                <div class="title">{{ item.title }}</div>
+                <div class="summary">{{ item.summary }}</div>
               </div>
               <div class="flex j-between">
                 <div
-                  v-for="(item1,index1) in item.images.splice(0,3)"
+                  v-for="(item1, index1) in item.images.splice(0, 3)"
                   :key="index1"
                   style="width:200px;height:150px;"
                 >
@@ -105,21 +129,23 @@
                 <div style="height:14px;width:14px;">
                   <EnvironmentOutlined />
                 </div>
-                <div>{{item.cityName}}</div>
+                <div>{{ item.cityName }}</div>
                 <div>by</div>
                 <div>
                   <img
-                    :src="`http://157.122.54.189:9095${item.account.defaultAvatar}`"
+                    :src="
+                      `http://157.122.54.189:9095${item.account.defaultAvatar}`
+                    "
                     style="height:14px;width:14px;"
                   />
                 </div>
-                <div>{{item.account.nickname}}</div>
+                <div>{{ item.account.nickname }}</div>
                 <div style="height:14px;width:14px;">
                   <EyeOutlined />
                 </div>
-                <div>{{item.watch}}</div>
+                <div>{{ item.watch }}</div>
               </div>
-              <div style="color:#ffa500">{{item.watch}}赞</div>
+              <div style="color:#ffa500">{{ item.watch }}赞</div>
             </div>
           </div>
         </div>
@@ -129,8 +155,10 @@
             show-quick-jumper
             v-model:current="current"
             v-model:pageSize="pageSize"
-            :total="Resposts111.length"
-            :show-total="(total, range) => `${range[0]}-${range[1]} 共 ${total} 条`"
+            :total="Resposts222.length"
+            :show-total="
+              (total, range) => `${range[0]}-${range[1]} 共 ${total} 条`
+            "
           />
         </div>
       </div>
@@ -138,13 +166,14 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import {
   defineComponent,
   reactive,
   toRefs,
   SetupContext,
-  onMounted
+  onMounted,
+  watch
 } from "vue";
 import {
   Respostscities,
@@ -165,12 +194,14 @@ interface Data {
   child: childrenItem[];
   value: string;
   citys: Citysname[];
-  //   Resposts111: RespostsItem[];
-  Resposts111: [];
-  arr: any[];
+  //   Resposts222: RespostsItem[];
+  Resposts222: RespostsItem[];
+  arr: RespostsItem[];
   number: number;
   current: number;
   pageSize: number;
+  img: [];
+  Rescity?: RespostsItem[];
 }
 export default defineComponent({
   name: "",
@@ -186,11 +217,13 @@ export default defineComponent({
       child: [],
       value: "",
       citys: [{ name: "广州" }, { name: "上海" }, { name: "北京" }],
-      Resposts111: [],
+      Resposts222: [],
       number: 0,
       current: 1,
       pageSize: 3,
-      arr: []
+      arr: [],
+      img: [],
+      Rescity: []
     });
     //移入
     const enter = (item: RespostscitiesItem, index: number): void => {
@@ -224,11 +257,15 @@ export default defineComponent({
     const getposts = (): void => {
       api
         .getposts({ city: data.value })
-        .then((res: any) => {
-          //   localStorage.setItem("Resposts", JSON.stringify(res));
+        .then((res: Resposts) => {
+          localStorage.setItem("Resposts", JSON.stringify(res));
           //   const aaa = JSON.parse(localStorage.getItem("Resposts")!);
+          const arr = JSON.parse(localStorage.getItem("Resposts")!);
+          //data.Rescity = res.data!;
+          console.log(res.data);
+          data.Resposts222 = arr.data! as RespostsItem[];
           console.log(res, 232323);
-          data.Resposts111 = res.data;
+          console.log(data.Resposts222, 232323);
         })
         .catch((err: any) => {
           console.log(err);

@@ -14,15 +14,15 @@
             <a-dropdown>
               <template v-slot:overlay>
                 <a-menu @click="handleMenuClick">
-                  <a-menu-item>
-                    <UserOutlined />身份证
-                  </a-menu-item>
-                  <a-menu-item>
-                    <UserOutlined />护照
-                  </a-menu-item>
+                  <a-menu-item> <UserOutlined />身份证 </a-menu-item>
+                  <a-menu-item> <UserOutlined />护照 </a-menu-item>
                 </a-menu>
               </template>
-              <a-button style="margin-left: 8px;left:-10px;" size="large" class="position-r">
+              <a-button
+                style="margin-left: 8px;left:-10px;"
+                size="large"
+                class="position-r"
+              >
                 身份证
                 <DownOutlined />
               </a-button>
@@ -44,14 +44,18 @@
         <div style="font-size:24px;font-weight:500;">保险</div>
         <div class="border conts flex a-center">
           &nbsp;&nbsp;
-          <a-checkbox v-model:checked="checked1" style="font-size:16px;">航空意外险：￥30/份×1 最高赔付260万</a-checkbox>
+          <a-checkbox v-model:checked="checked1" style="font-size:16px;"
+            >航空意外险：￥30/份×1 最高赔付260万</a-checkbox
+          >
         </div>
         <div class="border conts flex a-center">
           &nbsp;&nbsp;
-          <a-checkbox v-model:checked="checked2" style="font-size:16px;">航空意外险：￥30/份×1 最高赔付260万</a-checkbox>
+          <a-checkbox v-model:checked="checked2" style="font-size:16px;"
+            >航空意外险：￥30/份×1 最高赔付260万</a-checkbox
+          >
         </div>
         <div style="border-bottom:1px dashed #eee;margin:20px 0;"></div>
-        <div style="font-size:24px;font-weight:500;">练系人</div>
+        <div style="font-size:24px;font-weight:500;">联系人</div>
         <div style="margin:10px 0;width:330px;">
           <a-form ref="ruleForms">
             <a-form-item>
@@ -70,7 +74,9 @@
           </a-form>
         </div>
         <div style="margin:20px 0;width:330px;text-align:center;">
-          <a-button type="primary" size="large" style="padding:5px 50px;">提交订单</a-button>
+          <a-button type="primary" size="large" style="padding:5px 50px;"
+            >提交订单</a-button
+          >
         </div>
       </div>
       <!-- 右边 -->

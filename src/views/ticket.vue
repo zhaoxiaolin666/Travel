@@ -4,7 +4,9 @@
       <!-- 国内机票 -->
       <div style="padding:10px 0;" class="flex a-center">
         <img src="../assets/feiji.png" alt style="width:22=4px;height:24px;" />
-        <span style="font-size:24px;color:#FFA500;font-weight:400">国内机票</span>
+        <span style="font-size:24px;color:#FFA500;font-weight:400"
+          >国内机票</span
+        >
       </div>
       <div class="flex j-between">
         <div
@@ -12,7 +14,9 @@
         >
           <div class="flex j-around" style="font-size:20px;">
             <!-- 表单头部 -->
-            <div style="border-top:3px solid orange;width:100%;text-align:center;padding:5px 0;">
+            <div
+              style="border-top:3px solid orange;width:100%;text-align:center;padding:5px 0;"
+            >
               <span>
                 <SwapRightOutlined />
               </span>
@@ -32,7 +36,11 @@
           <div class="flex" style="margin:5px;">
             <!-- 表单 -->
             <div style="width:400px;margin:30px 0;">
-              <a-form :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
+              <a-form
+                :model="form"
+                :label-col="labelCol"
+                :wrapper-col="wrapperCol"
+              >
                 <a-form-item label="出发城市">
                   <a-input
                     v-model:value="form.Startingcity"
@@ -67,20 +75,32 @@
               </a-form>
             </div>
             <div style="width:100px">
-              <div style="width:70px;height:2px;background-color:#ccc;margin-top:50px;"></div>
-              <div style="width:2px;height:20px;background-color:#ccc;margin-left:68px;"></div>
+              <div
+                style="width:70px;height:2px;background-color:#ccc;margin-top:50px;"
+              ></div>
+              <div
+                style="width:2px;height:20px;background-color:#ccc;margin-left:68px;"
+              ></div>
               <div
                 style="background-color:#ccc;color:#fff;text-align:center;width:30px;margin-left:54px;"
                 class="c-pointer"
                 @click="clickchange"
-              >换</div>
-              <div style="width:2px;height:20px;background-color:#ccc;margin-left:68px;"></div>
+              >
+                换
+              </div>
+              <div
+                style="width:2px;height:20px;background-color:#ccc;margin-left:68px;"
+              ></div>
               <div style="width:70px;height:2px;background-color:#ccc;"></div>
             </div>
           </div>
         </div>
         <div>
-          <img src="../assets/特卖汇.jpeg" alt style="width:650px;height:350px;" />
+          <img
+            src="../assets/特卖汇.jpeg"
+            alt
+            style="width:650px;height:350px;"
+          />
         </div>
       </div>
       <div style="padding:20px 0;">
@@ -92,15 +112,25 @@
         <span style="color:#409EFF;font-size:24px;">特价机票</span>
       </div>
       <div class="flex j-between border position-r" style="padding:15px 0;">
-        <div v-for="(item,index) in ressale" :key="index" style="flex:1;" class="t-center">
-          <img :src="ressale[0].cover" alt style="width:90%;height:200px;" @click="goto(item)" />
+        <div
+          v-for="(item, index) in ressale"
+          :key="index"
+          style="flex:1;"
+          class="t-center"
+        >
+          <img
+            :src="ressale[0].cover"
+            alt
+            style="width:90%;height:200px;"
+            @click="goto(item)"
+          />
           <div class="flex j-center">
             <div
               class="position-a flex j-around border bj-b"
               style="bottom:15px;width:22.5%;color:#fff;flex:1;opacity: 0.5;"
             >
-              <div>{{item.departCity}}-{{item.destCity}}</div>
-              <div>￥{{item.price}}</div>
+              <div>{{ item.departCity }}-{{ item.destCity }}</div>
+              <div>￥{{ item.price }}</div>
             </div>
           </div>
         </div>
@@ -126,6 +156,7 @@ import { Form } from "ant-design-vue/types/form/form.d";
 import moment from "moment";
 import "moment/locale/zh-cn";
 import { useRouter, useRoute } from "vue-router";
+import dayjs from "dayjs";
 interface LabelColItem {
   span: number;
 }
@@ -228,8 +259,10 @@ export default defineComponent({
     };
     //禁用时间
     const disabledDate = (current: any) => {
+      //   console.log(current, "current");
       // Can not select days before today and today
-      return current && current < moment().endOf("day");
+      //   return current && current < Date.now() - 24 * 60 * 60 * 1000;
+      return current && current < dayjs().subtract(3, "day");
     };
     //时间
     const Onchange = (date: any, dateString: any): void => {
